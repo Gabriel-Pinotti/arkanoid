@@ -10,7 +10,7 @@ using namespace std;
 #define PADDLE_WIDTH 100
 #define STARTING_X (SCREEN_WIDTH/2)-(PADDLE_WIDTH/2)
 #define STARTING_Y 650
-#define SPEED 200
+#define SPEED 250
 
 #define STATIC 0
 #define LEFT 1
@@ -39,21 +39,27 @@ void movePaddle(int direction, Vector2 &paddle_position, float &ft){
     }
 }
 
-void collision(){
-    
+void collision(Vector2 &paddle_position){
+    if (paddle_position.x > SCREEN_WIDTH-PADDLE_WIDTH){
+        paddle_position.x = SCREEN_WIDTH-PADDLE_WIDTH;
+    }
+    if (paddle_position.x < 0){
+        paddle_position.x = 0;
+    }
 }
 
 
 int main(){
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Arkanoid");
     SetTargetFPS(60);
-    Vector2 paddle = {STARTING_X, STARTING_Y}; // starting position
+    Vector2 paddle_position = {STARTING_X, STARTING_Y}; // starting position
     int direction;  
 
     while (!WindowShouldClose()){
         float ft = GetFrameTime();
-        movePaddle(direction, paddle, ft);
-        DrawRectangle(paddle.x, paddle.y, PADDLE_WIDTH, PADDLE_HEIGHT, GRAY);
+        movePaddle(direction, paddle_position, ft);
+        collision(paddle_position);
+        DrawRectangle(paddle_position.x, paddle_position.y, PADDLE_WIDTH, PADDLE_HEIGHT, GRAY);
         
         BeginDrawing();
         ClearBackground(BLACK);
