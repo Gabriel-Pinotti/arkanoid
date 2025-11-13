@@ -6,11 +6,6 @@ using namespace std;
 #define SCREEN_WIDTH 400
 #define SCREEN_HEIGHT 800
 
-#define PADDLE_HEIGHT 20
-#define PADDLE_WIDTH 100
-#define STARTING_X (SCREEN_WIDTH/2)-(PADDLE_WIDTH/2)
-#define STARTING_Y 650
-
 #define STATIC 0
 #define LEFT 1
 #define RIGHT 2
@@ -27,10 +22,12 @@ struct Ball {
 Ball ball;
 
 struct Paddle {
-    Vector2 position = {STARTING_X, STARTING_Y};
     int height = 20;
     int width = 100;
     int speed = 250;
+    float starting_x = (SCREEN_WIDTH/2)-(width/2);
+    float starting_y = 650;
+    Vector2 position = {starting_x, starting_y};
 };
 
 Paddle paddle;
@@ -73,16 +70,21 @@ void moveBall(float &ft){
 }
 
 void paddle_wall_collision(Vector2 &paddle_position){
-    if (paddle_position.x > SCREEN_WIDTH-PADDLE_WIDTH){
-        paddle_position.x = SCREEN_WIDTH-PADDLE_WIDTH;
+    if (paddle_position.x > SCREEN_WIDTH-paddle.width){
+        paddle_position.x = SCREEN_WIDTH-paddle.width;
     }
     if (paddle_position.x < 0){
         paddle_position.x = 0;
     }
 }
 
-void paddle_ball_collision(Vector2 &paddle_position, Vector2 &ball_position){
-
+void ball_collision(){
+    if (paddle.position.y-ball.radius < ball.position.y){
+        ball.direction = UP;
+    }
+    if (ball.position.y < ball.radius){
+        ball.direction = DOWN;
+    }
 }
 
 int main(){
@@ -94,7 +96,7 @@ int main(){
         float ft = GetFrameTime();
         movePaddle(ft);
         moveBall(ft);
-        paddle_ball_collision(paddle.position, ball.position);
+        ball_collision();
         paddle_wall_collision(paddle.position);
         DrawRectangle(paddle.position.x, paddle.position.y, paddle.width, paddle.height, GRAY);
         
