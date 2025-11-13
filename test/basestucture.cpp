@@ -10,7 +10,6 @@ using namespace std;
 #define PADDLE_WIDTH 100
 #define STARTING_X (SCREEN_WIDTH/2)-(PADDLE_WIDTH/2)
 #define STARTING_Y 650
-#define SPEED 250
 
 #define STATIC 0
 #define LEFT 1
@@ -28,14 +27,15 @@ struct Ball {
 Ball ball;
 
 struct Paddle {
-    Vector2 paddle_position = {STARTING_X, STARTING_Y};
+    Vector2 position = {STARTING_X, STARTING_Y};
     int height = 20;
     int width = 100;
+    int speed = 250;
 };
 
 Paddle paddle;
 
-void movePaddle(Vector2 &paddle_position, float &ft){
+void movePaddle(float &ft){
     int direction;
     if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)){
         direction = RIGHT;
@@ -49,23 +49,23 @@ void movePaddle(Vector2 &paddle_position, float &ft){
 
     switch (direction){ 
         case LEFT:
-            paddle_position.x-=SPEED * ft;
+            paddle.position.x-=paddle.speed * ft;
             break;
         case RIGHT:
-            paddle_position.x+=SPEED * ft;
+            paddle.position.x+=paddle.speed * ft;
             break;
         case STATIC:
             break;
     }
 }
 
-void moveBall(int direction, Vector2 &ball_position, float &ft){
-    switch (direction){ 
+void moveBall(float &ft){
+    switch (ball.direction){ 
         case UP:
-            ball_position.x-=SPEED * ft;
+            ball.position.y-=ball.speed * ft;
             break;
         case DOWN:
-            ball_position.x+=SPEED * ft;
+            ball.position.y+=ball.speed * ft;
             break;
         case STATIC:
             break;
@@ -88,17 +88,15 @@ void paddle_ball_collision(Vector2 &paddle_position, Vector2 &ball_position){
 int main(){
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Arkanoid");
     SetTargetFPS(60);
-    Vector2 paddle_position = {STARTING_X, STARTING_Y}; // starting paddle position
-    Vector2 ball_position = {SCREEN_WIDTH/2, SCREEN_HEIGHT/2}; // starting ball position
     int direction;  
 
     while (!WindowShouldClose()){
         float ft = GetFrameTime();
-        movePaddle(paddle_position, ft);
-        moveBall(direction, ball_position, ft);
-        paddle_ball_collision(paddle_position, ball_position);
-        paddle_wall_collision(paddle_position);
-        DrawRectangle(paddle_position.x, paddle_position.y, PADDLE_WIDTH, PADDLE_HEIGHT, GRAY);
+        movePaddle(ft);
+        moveBall(ft);
+        paddle_ball_collision(paddle.position, ball.position);
+        paddle_wall_collision(paddle.position);
+        DrawRectangle(paddle.position.x, paddle.position.y, paddle.width, paddle.height, GRAY);
         
         BeginDrawing();
         ClearBackground(BLACK);
