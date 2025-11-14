@@ -11,7 +11,6 @@ using namespace std;
 #define RIGHT 2
 
 struct Ball {
-    int direction = 4;
     int radius = 10;
     Vector2 speed = {0, -5};
     Vector2 position = {SCREEN_WIDTH/2, SCREEN_HEIGHT/2};
