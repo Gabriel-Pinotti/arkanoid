@@ -6,9 +6,6 @@ using namespace std;
 #define SCREEN_WIDTH 400
 #define SCREEN_HEIGHT 800
 
-#define STATIC 0
-#define LEFT 1
-#define RIGHT 2
 
 struct Ball {
     int radius = 10;
@@ -20,32 +17,32 @@ Ball ball;
 
 struct Paddle {
     int speed = 250;
-    Vector2 size = {100, 20};
-    Vector2 position = {((SCREEN_WIDTH/2)-(size.x/2)), 650}; // defines initial position
+    Vector2 size = {150, 20};
+    Vector2 position = {((SCREEN_WIDTH/2)), 650}; // defines initial position
 };
 
 Paddle paddle;
 
 void movePaddle(float &ft){
-    int direction;
+    char direction;
     if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)){
-        direction = RIGHT;
+        direction = 'r';
     }
     else if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)){
-        direction = LEFT;
+        direction = 'l';
     }
     else {
-        direction = STATIC;
+        direction = 's';
     }
 
     switch (direction){ 
-        case LEFT:
+        case 'l':
             paddle.position.x-=paddle.speed * ft;
             break;
-        case RIGHT:
+        case 'r':
             paddle.position.x+=paddle.speed * ft;
             break;
-        case STATIC:
+        case 's':
             break;
     }
 }
@@ -94,12 +91,13 @@ void collisions(){
     paddle_wall_collision(paddle.position);
 }
 
-void draw(){
-    DrawRectangle(paddle.position.x - paddle.size.x/2, paddle.position.y - paddle.size.y/2, paddle.size.x, paddle.size.y, GRAY);
-    DrawCircleV(ball.position, ball.radius, BLUE);
+void draw(Texture2D paddle_texture, Texture2D ball_texture){
+    DrawTexture(ball_texture, ball.position.x-ball.radius, ball.position.y-ball.radius, WHITE);
+    DrawTexture(paddle_texture, paddle.position.x-paddle.size.x/2, paddle.position.y-paddle.size.y/2, WHITE);
+
     
     BeginDrawing();
-    ClearBackground(BLACK);
+    ClearBackground(WHITE);
     EndDrawing();
 }
 
@@ -107,12 +105,14 @@ int main(){ // TODO add bricks
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Arkanoid");
     SetTargetFPS(60);
     int direction;  
+    Texture2D paddle_texture = LoadTexture("../assets/paddle_texture.png");
+    Texture2D ball_texture = LoadTexture("../assets/ball_texture.png");
 
     while (!WindowShouldClose()){ // while the game is running
         float ft = GetFrameTime();
         movements(ft);
         collisions();
-        draw();
+        draw(paddle_texture, ball_texture);
     }
 
     CloseWindow();
