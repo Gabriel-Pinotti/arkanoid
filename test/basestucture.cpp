@@ -1,10 +1,14 @@
 #include <iostream>
 #include "raylib.h"
+#include <vector>
 using namespace std;
 // compile using '$ g++ main.cpp -lraylib'
 
+// ----- GLOBAL VARIABLES -----
 #define SCREEN_WIDTH 400
 #define SCREEN_HEIGHT 800
+const int brickRows = 3;
+const int bricksPerRow = 4;
 
 
 struct Ball {
@@ -18,10 +22,49 @@ Ball ball;
 struct Paddle {
     int speed = 250;
     Vector2 size = {150, 20};
-    Vector2 position = {((SCREEN_WIDTH/2)), 650}; // defines initial position
+    Vector2 position = {((SCREEN_WIDTH/2)), 650};
 };
 
 Paddle paddle;
+
+struct Brick {
+    Vector2 position;
+    int health;
+    Vector2 size;
+};
+
+Brick brick[brickRows][bricksPerRow];
+
+
+void initializeBricks(){
+    float x_margins = 50;
+    float y_margin = 40;
+    float brick_y = 35;
+    float brick_x = (SCREEN_WIDTH-(2*x_margins))/bricksPerRow;
+
+    for (int i = 0; i < brickRows; i++) {
+        for (int j = 0; j < bricksPerRow; j++) {
+            brick[i][j].size = {brick_x, brick_y};
+            brick[i][j].position = { (j*brick[i][j].size.x + brick[i][j].size.x/2)+x_margins, i*brick[i][j].size.y + y_margin };
+            brick[i][j].health = 1; // TODO create bricks with different health based on difficulty
+        }
+    }
+}
+
+void drawBricks(){
+    for (int i = 0; i < brickRows; i++){
+        for (int j = 0; j < bricksPerRow; j++)
+        {
+            if ((i + j) % 2 == 0) { // TODO update to render sprites based on health
+                DrawRectangle(brick[i][j].position.x - brick[i][j].size.x/2, brick[i][j].position.y - brick[i][j].size.y/2, brick[i][j].size.x, brick[i][j].size.y, BLACK);
+            }
+            else {
+                DrawRectangle(brick[i][j].position.x - brick[i][j].size.x/2, brick[i][j].position.y - brick[i][j].size.y/2, brick[i][j].size.x, brick[i][j].size.y, DARKPURPLE);
+            }     
+        }
+        
+    }
+};
 
 void movePaddle(float &ft){
     char direction;
@@ -94,24 +137,25 @@ void collisions(){
 void draw(Texture2D paddle_texture, Texture2D ball_texture){
     DrawTexture(ball_texture, ball.position.x-ball.radius, ball.position.y-ball.radius, WHITE);
     DrawTexture(paddle_texture, paddle.position.x-paddle.size.x/2, paddle.position.y-paddle.size.y/2, WHITE);
-
+    drawBricks();
     
     BeginDrawing();
     ClearBackground(WHITE);
     EndDrawing();
 }
 
-int main(){ // TODO add bricks
+int main(){
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Arkanoid");
     SetTargetFPS(60);
     int direction;  
     Texture2D paddle_texture = LoadTexture("../assets/paddle_texture.png");
     Texture2D ball_texture = LoadTexture("../assets/ball_texture.png");
+    initializeBricks();
 
     while (!WindowShouldClose()){ // while the game is running
         float ft = GetFrameTime();
         movements(ft);
-        collisions();
+        collisions(); // TODO add bricks collision
         draw(paddle_texture, ball_texture);
     }
 
