@@ -9,25 +9,20 @@ using namespace std;
 #define STATIC 0
 #define LEFT 1
 #define RIGHT 2
-#define UP 3
-#define DOWN 4
 
 struct Ball {
     int direction = 4;
     int radius = 10;
-    int speed = 200;
+    Vector2 speed = {0, -5};
     Vector2 position = {SCREEN_WIDTH/2, SCREEN_HEIGHT/2};
 };
 
 Ball ball;
 
 struct Paddle {
-    int height = 20;
-    int width = 100;
     int speed = 250;
-    float starting_x = (SCREEN_WIDTH/2)-(width/2);
-    float starting_y = 650;
-    Vector2 position = {starting_x, starting_y};
+    Vector2 size = {100, 20};
+    Vector2 position = {((SCREEN_WIDTH/2)-(size.x/2)), 650}; // defines initial position
 };
 
 Paddle paddle;
@@ -56,53 +51,69 @@ void movePaddle(float &ft){
     }
 }
 
-void moveBall(float &ft){
-    switch (ball.direction){ 
-        case UP:
-            ball.position.y-=ball.speed * ft;
-            break;
-        case DOWN:
-            ball.position.y+=ball.speed * ft;
-            break;
-        case STATIC:
-            break;
-    }
+void moveBall(){
+    ball.position.x += ball.speed.x;
+    ball.position.y += ball.speed.y;
 }
 
 void paddle_wall_collision(Vector2 &paddle_position){
-    if (paddle_position.x > SCREEN_WIDTH-paddle.width){
-        paddle_position.x = SCREEN_WIDTH-paddle.width;
+    if ((paddle.position.x - paddle.size.x/2) <= 0) {
+        paddle.position.x = paddle.size.x/2;
     }
-    if (paddle_position.x < 0){
-        paddle_position.x = 0;
+    if ((paddle.position.x + paddle.size.x/2) >= SCREEN_WIDTH) {
+        paddle.position.x = SCREEN_WIDTH - paddle.size.x/2;
     }
 }
 
 void ball_collision(){
-    if (paddle.position.y-ball.radius < ball.position.y){
-        ball.direction = UP;
+    if (((ball.position.x + ball.radius) >= SCREEN_WIDTH) || ((ball.position.x - ball.radius) <= 0)) { // left and right
+        ball.speed.x *= -1;
     }
-    if (ball.position.y < ball.radius){
-        ball.direction = DOWN;
+    if ((ball.position.y - ball.radius) <= 0) { // up
+        ball.speed.y *= -1;
+    }
+    if ((ball.position.y + ball.radius) >= SCREEN_HEIGHT) { // down
+        // TODO add logic to floor collision
+    }
+    if (CheckCollisionCircleRec(ball.position, ball.radius, // ball - paddle collision
+        (Rectangle){ paddle.position.x - paddle.size.x/2, paddle.position.y - paddle.size.y/2, paddle.size.x, paddle.size.y}))
+    {
+        if (ball.speed.y > 0) {
+            ball.speed.y *= -1;
+            ball.speed.x = (ball.position.x - paddle.position.x)/(paddle.size.x/2)*5;
+        }
     }
 }
 
-int main(){
+void movements(float &ft){
+    movePaddle(ft);
+    moveBall();
+}
+
+void collisions(){
+    ball_collision();
+    paddle_wall_collision(paddle.position);
+}
+
+void draw(){
+    DrawRectangle(paddle.position.x - paddle.size.x/2, paddle.position.y - paddle.size.y/2, paddle.size.x, paddle.size.y, GRAY);
+    DrawCircleV(ball.position, ball.radius, BLUE);
+    
+    BeginDrawing();
+    ClearBackground(BLACK);
+    EndDrawing();
+}
+
+int main(){ // TODO add bricks
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Arkanoid");
     SetTargetFPS(60);
     int direction;  
 
-    while (!WindowShouldClose()){
+    while (!WindowShouldClose()){ // while the game is running
         float ft = GetFrameTime();
-        movePaddle(ft);
-        moveBall(ft);
-        ball_collision();
-        paddle_wall_collision(paddle.position);
-        DrawRectangle(paddle.position.x, paddle.position.y, paddle.width, paddle.height, GRAY);
-        
-        BeginDrawing();
-        ClearBackground(BLACK);
-        EndDrawing();
+        movements(ft);
+        collisions();
+        draw();
     }
 
     CloseWindow();
