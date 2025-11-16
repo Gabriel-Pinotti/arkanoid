@@ -1,6 +1,7 @@
 #include <iostream>
 #include "raylib.h"
 #include <vector>
+#include <math.h>
 using namespace std;
 // compile using '$ g++ main.cpp -lraylib'
 
@@ -37,7 +38,7 @@ Brick brick[brickRows][bricksPerRow];
 
 
 void initializeBricks(){
-    float x_margins = 50;
+    float x_margins = 30;
     float y_margin = 40;
     float brick_y = 35;
     float brick_x = (SCREEN_WIDTH-(2*x_margins))/bricksPerRow;
@@ -55,12 +56,14 @@ void drawBricks(){
     for (int i = 0; i < brickRows; i++){
         for (int j = 0; j < bricksPerRow; j++)
         {
-            if ((i + j) % 2 == 0) { // TODO update to render sprites based on health
-                DrawRectangle(brick[i][j].position.x - brick[i][j].size.x/2, brick[i][j].position.y - brick[i][j].size.y/2, brick[i][j].size.x, brick[i][j].size.y, BLACK);
+            if (brick[i][j].health >= 1){
+                if ((i + j) % 2 == 0) { // TODO update to render sprites based on health
+                    DrawRectangle(brick[i][j].position.x - brick[i][j].size.x/2, brick[i][j].position.y - brick[i][j].size.y/2, brick[i][j].size.x, brick[i][j].size.y, BLACK);
+                }
+                else {
+                    DrawRectangle(brick[i][j].position.x - brick[i][j].size.x/2, brick[i][j].position.y - brick[i][j].size.y/2, brick[i][j].size.x, brick[i][j].size.y, DARKPURPLE);
+                }         
             }
-            else {
-                DrawRectangle(brick[i][j].position.x - brick[i][j].size.x/2, brick[i][j].position.y - brick[i][j].size.y/2, brick[i][j].size.x, brick[i][j].size.y, DARKPURPLE);
-            }     
         }
         
     }
@@ -114,12 +117,53 @@ void ball_collision(){
     if ((ball.position.y + ball.radius) >= SCREEN_HEIGHT) { // down
         // TODO add logic to floor collision
     }
-    if (CheckCollisionCircleRec(ball.position, ball.radius, // ball - paddle collision
+    if (CheckCollisionCircleRec(ball.position, ball.radius, // ball x paddle collision
         (Rectangle){ paddle.position.x - paddle.size.x/2, paddle.position.y - paddle.size.y/2, paddle.size.x, paddle.size.y}))
     {
         if (ball.speed.y > 0) {
             ball.speed.y *= -1;
             ball.speed.x = (ball.position.x - paddle.position.x)/(paddle.size.x/2)*5;
+        }
+    }
+
+    // ball x bricks collision
+
+    for (int i = 0; i < brickRows; i++) {
+        for (int j = 0; j < bricksPerRow; j++) {
+            if (brick[i][j].health >= 1) {
+                // Hit below
+                if (((ball.position.y - ball.radius) <= (brick[i][j].position.y + brick[i][j].size.y/2)) &&
+                    ((ball.position.y - ball.radius) > (brick[i][j].position.y + brick[i][j].size.y/2 + ball.speed.y)) &&
+                    ((fabs(ball.position.x - brick[i][j].position.x)) < (brick[i][j].size.x/2 + ball.radius*2/3)) && (ball.speed.y < 0))
+                {
+                    brick[i][j].health -= 1;
+                    ball.speed.y *= -1;
+                }
+                // Hit above
+                else if (((ball.position.y + ball.radius) >= (brick[i][j].position.y - brick[i][j].size.y/2)) &&
+                        ((ball.position.y + ball.radius) < (brick[i][j].position.y - brick[i][j].size.y/2 + ball.speed.y)) &&
+                        ((fabs(ball.position.x - brick[i][j].position.x)) < (brick[i][j].size.x/2 + ball.radius*2/3)) && (ball.speed.y > 0))
+                {
+                    brick[i][j].health -= 1;
+                    ball.speed.y *= -1;
+                }
+                // Hit left
+                else if (((ball.position.x + ball.radius) >= (brick[i][j].position.x - brick[i][j].size.x/2)) &&
+                        ((ball.position.x + ball.radius) < (brick[i][j].position.x - brick[i][j].size.x/2 + ball.speed.x)) &&
+                        ((fabs(ball.position.y - brick[i][j].position.y)) < (brick[i][j].size.y/2 + ball.radius*2/3)) && (ball.speed.x > 0))
+                {
+                    brick[i][j].health -= 1;
+                    ball.speed.x *= -1;
+                }
+                // Hit right
+                else if (((ball.position.x - ball.radius) <= (brick[i][j].position.x + brick[i][j].size.x/2)) &&
+                        ((ball.position.x - ball.radius) > (brick[i][j].position.x + brick[i][j].size.x/2 + ball.speed.x)) &&
+                        ((fabs(ball.position.y - brick[i][j].position.y)) < (brick[i][j].size.y/2 + ball.radius*2/3)) && (ball.speed.x < 0))
+                {
+                    brick[i][j].health -= 1;
+                    ball.speed.x *= -1;
+                }
+            }
         }
     }
 }
