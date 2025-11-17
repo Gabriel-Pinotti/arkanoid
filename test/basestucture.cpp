@@ -8,8 +8,8 @@ using namespace std;
 // ----- GLOBAL VARIABLES -----
 #define SCREEN_WIDTH 400
 #define SCREEN_HEIGHT 800
-const int brickRows = 3;
-const int bricksPerRow = 4;
+const int brickRows = 4;
+const int bricksPerRow = 5;
 
 
 struct Ball {
@@ -39,7 +39,7 @@ Brick brick[brickRows][bricksPerRow];
 
 void initializeBricks(){
     float x_margins = 30;
-    float y_margin = 40;
+    float y_margin = 40; // blocks are 68x40px
     float brick_y = 35;
     float brick_x = (SCREEN_WIDTH-(2*x_margins))/bricksPerRow;
 
@@ -52,17 +52,13 @@ void initializeBricks(){
     }
 }
 
-void drawBricks(){
+void drawBricks(Texture2D brick_texture){
     for (int i = 0; i < brickRows; i++){
         for (int j = 0; j < bricksPerRow; j++)
         {
             if (brick[i][j].health >= 1){
-                if ((i + j) % 2 == 0) { // TODO update to render sprites based on health
-                    DrawRectangle(brick[i][j].position.x - brick[i][j].size.x/2, brick[i][j].position.y - brick[i][j].size.y/2, brick[i][j].size.x, brick[i][j].size.y, BLACK);
-                }
-                else {
-                    DrawRectangle(brick[i][j].position.x - brick[i][j].size.x/2, brick[i][j].position.y - brick[i][j].size.y/2, brick[i][j].size.x, brick[i][j].size.y, DARKPURPLE);
-                }         
+                DrawTexture(brick_texture, brick[i][j].position.x-brick[i][j].size.x/2, brick[i][j].position.y-brick[i][j].size.y/2, WHITE);
+       
             }
         }
         
@@ -108,6 +104,9 @@ void paddle_wall_collision(Vector2 &paddle_position){
 }
 
 void ball_collision(){
+    
+    // ball x walls collision
+
     if (((ball.position.x + ball.radius) >= SCREEN_WIDTH) || ((ball.position.x - ball.radius) <= 0)) { // left and right
         ball.speed.x *= -1;
     }
@@ -117,7 +116,11 @@ void ball_collision(){
     if ((ball.position.y + ball.radius) >= SCREEN_HEIGHT) { // down
         // TODO add logic to floor collision
     }
-    if (CheckCollisionCircleRec(ball.position, ball.radius, // ball x paddle collision
+
+
+    // ball x paddle collision
+
+    if (CheckCollisionCircleRec(ball.position, ball.radius,
         (Rectangle){ paddle.position.x - paddle.size.x/2, paddle.position.y - paddle.size.y/2, paddle.size.x, paddle.size.y}))
     {
         if (ball.speed.y > 0) {
@@ -125,6 +128,7 @@ void ball_collision(){
             ball.speed.x = (ball.position.x - paddle.position.x)/(paddle.size.x/2)*5;
         }
     }
+
 
     // ball x bricks collision
 
@@ -136,7 +140,7 @@ void ball_collision(){
                     ((ball.position.y - ball.radius) > (brick[i][j].position.y + brick[i][j].size.y/2 + ball.speed.y)) &&
                     ((fabs(ball.position.x - brick[i][j].position.x)) < (brick[i][j].size.x/2 + ball.radius*2/3)) && (ball.speed.y < 0))
                 {
-                    brick[i][j].health -= 1;
+                    brick[i][j].health -= 1; // TODO verify if brick health is 0 so it can drop itens randomly
                     ball.speed.y *= -1;
                 }
                 // Hit above
@@ -178,10 +182,11 @@ void collisions(){
     paddle_wall_collision(paddle.position);
 }
 
-void draw(Texture2D paddle_texture, Texture2D ball_texture){
+void draw(Texture2D paddle_texture, Texture2D ball_texture, Texture2D brick_texture, Texture2D game_background){ // TODO turn textures global to reduce parameters
+    DrawTexture(game_background, 0, 0, WHITE);
     DrawTexture(ball_texture, ball.position.x-ball.radius, ball.position.y-ball.radius, WHITE);
     DrawTexture(paddle_texture, paddle.position.x-paddle.size.x/2, paddle.position.y-paddle.size.y/2, WHITE);
-    drawBricks();
+    drawBricks(brick_texture);
     
     BeginDrawing();
     ClearBackground(WHITE);
@@ -191,16 +196,18 @@ void draw(Texture2D paddle_texture, Texture2D ball_texture){
 int main(){
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Arkanoid");
     SetTargetFPS(60);
-    int direction;  
-    Texture2D paddle_texture = LoadTexture("../assets/paddle_texture.png");
+    Texture2D game_background = LoadTexture("../assets/game_background.png");
+    
+    Texture2D paddle_texture = LoadTexture("../assets/paddle_normal_texture.png"); // TODO make this variable global, along with the other sizes
     Texture2D ball_texture = LoadTexture("../assets/ball_texture.png");
+    Texture2D brick_2hp_texture = LoadTexture("../assets/2hpbrick.png"); // TODO load the other HP ones and make them global to reduce parameter passing
     initializeBricks();
 
     while (!WindowShouldClose()){ // while the game is running
         float ft = GetFrameTime();
         movements(ft);
-        collisions(); // TODO add bricks collision
-        draw(paddle_texture, ball_texture);
+        collisions();
+        draw(paddle_texture, ball_texture, brick_2hp_texture, game_background);
     }
 
     CloseWindow();
