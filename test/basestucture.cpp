@@ -8,13 +8,23 @@ using namespace std;
 // ----- GLOBAL VARIABLES -----
 #define SCREEN_WIDTH 400
 #define SCREEN_HEIGHT 800
-const int brickRows = 4;
+const int brickRows = 4; // TODO put brick variables in a separeted header when modularizing
 const int bricksPerRow = 5;
+// ----- TEXTURES -----
+Texture2D game_background; // TODO put textures variables in a separated header when modularizing
+Texture2D paddle_texture;
+Texture2D ball_texture;
+Texture2D brick_1hp_texture;
+Texture2D brick_2hp_texture;
+Texture2D brick_3hp_texture;
+Texture2D brick_4hp_texture;
+Texture2D brick_5hp_texture;
+Texture2D brick_6hp_texture;
 
 
-struct Ball {
+struct Ball { // TODO put all structures in a separated header when modularizing
     int radius = 10;
-    Vector2 speed = {0, -5};
+    Vector2 speed = {0, -5}; // TODO difficulty must change initial ball speed
     Vector2 position = {SCREEN_WIDTH/2, SCREEN_HEIGHT/2};
 };
 
@@ -47,17 +57,49 @@ void initializeBricks(){
         for (int j = 0; j < bricksPerRow; j++) {
             brick[i][j].size = {brick_x, brick_y};
             brick[i][j].position = { (j*brick[i][j].size.x + brick[i][j].size.x/2)+x_margins, i*brick[i][j].size.y + y_margin };
-            brick[i][j].health = 1; // TODO create bricks with different health based on difficulty
+            brick[i][j].health = 2; // TODO create bricks with different health based on difficulty
         }
     }
 }
 
-void drawBricks(Texture2D brick_texture){
+void initializeTextures(){
+    game_background = LoadTexture("../assets/game_background.png");
+    paddle_texture = LoadTexture("../assets/paddle_normal_texture.png");
+    ball_texture = LoadTexture("../assets/ball_texture.png");
+    brick_1hp_texture = LoadTexture("../assets/1hpbrick.png"); // TODO add the remaining 5 textures
+    brick_2hp_texture = LoadTexture("../assets/2hpbrick.png");
+    brick_3hp_texture = LoadTexture("../assets/3hpbrick.png");
+    brick_4hp_texture = LoadTexture("../assets/4hpbrick.png");
+    brick_5hp_texture = LoadTexture("../assets/5hpbrick.png");
+    brick_6hp_texture = LoadTexture("../assets/6hpbrick.png");
+}
+
+void drawBricks(){
     for (int i = 0; i < brickRows; i++){
         for (int j = 0; j < bricksPerRow; j++)
         {
-            if (brick[i][j].health >= 1){
-                DrawTexture(brick_texture, brick[i][j].position.x-brick[i][j].size.x/2, brick[i][j].position.y-brick[i][j].size.y/2, WHITE);
+            if (brick[i][j].health == 1){
+                DrawTexture(brick_1hp_texture, brick[i][j].position.x-brick[i][j].size.x/2, brick[i][j].position.y-brick[i][j].size.y/2, WHITE);
+       
+            }
+            if (brick[i][j].health == 2){
+                DrawTexture(brick_2hp_texture, brick[i][j].position.x-brick[i][j].size.x/2, brick[i][j].position.y-brick[i][j].size.y/2, WHITE);
+       
+            }
+            if (brick[i][j].health == 3){
+                DrawTexture(brick_3hp_texture, brick[i][j].position.x-brick[i][j].size.x/2, brick[i][j].position.y-brick[i][j].size.y/2, WHITE);
+       
+            }
+            if (brick[i][j].health == 4){
+                DrawTexture(brick_4hp_texture, brick[i][j].position.x-brick[i][j].size.x/2, brick[i][j].position.y-brick[i][j].size.y/2, WHITE);
+       
+            }
+            if (brick[i][j].health == 5){
+                DrawTexture(brick_5hp_texture, brick[i][j].position.x-brick[i][j].size.x/2, brick[i][j].position.y-brick[i][j].size.y/2, WHITE);
+       
+            }
+            if (brick[i][j].health == 6){
+                DrawTexture(brick_6hp_texture, brick[i][j].position.x-brick[i][j].size.x/2, brick[i][j].position.y-brick[i][j].size.y/2, WHITE);
        
             }
         }
@@ -104,7 +146,7 @@ void paddle_wall_collision(Vector2 &paddle_position){
 }
 
 void ball_collision(){
-    
+
     // ball x walls collision
 
     if (((ball.position.x + ball.radius) >= SCREEN_WIDTH) || ((ball.position.x - ball.radius) <= 0)) { // left and right
@@ -182,11 +224,11 @@ void collisions(){
     paddle_wall_collision(paddle.position);
 }
 
-void draw(Texture2D paddle_texture, Texture2D ball_texture, Texture2D brick_texture, Texture2D game_background){ // TODO turn textures global to reduce parameters
+void draw(){
     DrawTexture(game_background, 0, 0, WHITE);
     DrawTexture(ball_texture, ball.position.x-ball.radius, ball.position.y-ball.radius, WHITE);
     DrawTexture(paddle_texture, paddle.position.x-paddle.size.x/2, paddle.position.y-paddle.size.y/2, WHITE);
-    drawBricks(brick_texture);
+    drawBricks();
     
     BeginDrawing();
     ClearBackground(WHITE);
@@ -196,18 +238,14 @@ void draw(Texture2D paddle_texture, Texture2D ball_texture, Texture2D brick_text
 int main(){
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Arkanoid");
     SetTargetFPS(60);
-    Texture2D game_background = LoadTexture("../assets/game_background.png");
-    
-    Texture2D paddle_texture = LoadTexture("../assets/paddle_normal_texture.png"); // TODO make this variable global, along with the other sizes
-    Texture2D ball_texture = LoadTexture("../assets/ball_texture.png");
-    Texture2D brick_2hp_texture = LoadTexture("../assets/2hpbrick.png"); // TODO load the other HP ones and make them global to reduce parameter passing
     initializeBricks();
+    initializeTextures();
 
     while (!WindowShouldClose()){ // while the game is running
         float ft = GetFrameTime();
         movements(ft);
         collisions();
-        draw(paddle_texture, ball_texture, brick_2hp_texture, game_background);
+        draw();
     }
 
     CloseWindow();
