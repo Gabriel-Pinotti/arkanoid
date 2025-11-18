@@ -4,7 +4,7 @@
 
 // ----- GLOBAL VARIABLES -----
 #define SCREEN_WIDTH 400
-#define SCREEN_HEIGHT 800
+#define SCREEN_HEIGHT 700
 extern int points;
 extern int lives;
 

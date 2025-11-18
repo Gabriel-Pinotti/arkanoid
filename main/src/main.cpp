@@ -8,7 +8,8 @@
 #include "../includes/ball.h"
 #include "../includes/bricks.h"
 using namespace std;
-// compile using '$ g++ ./src/main.cpp ./includes/*.cpp -lraylib'
+// compile using makefile if using linux
+// for windows, use alternative makefile
 
 int main(){
     SetTargetFPS(60);
