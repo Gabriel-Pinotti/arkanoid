@@ -3,6 +3,7 @@
 #include "math.h"
 #include "paddle.h"
 #include "bricks.h"
+#include "textures.h"
 
 // ----- Main declaration -----
 Ball ball;
@@ -32,7 +33,10 @@ void ball_collision(){
         ball.speed.y *= -1;
     }
     if ((ball.position.y + ball.radius) >= SCREEN_HEIGHT) { // down
-        // TODO add logic to floor collision
+        lives-=1;
+        ball.speed = {0, 0};
+        ball.active = false;
+        // TODO add game over screen
     }
 
 
@@ -105,4 +109,8 @@ void ball_collision(){
             }
         }
     }
+}
+
+void drawBall(){
+    DrawTexture(ball_texture, ball.position.x-ball.radius, ball.position.y-ball.radius, WHITE);
 }

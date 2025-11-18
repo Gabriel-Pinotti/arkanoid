@@ -6,10 +6,17 @@
 #include "textures.h"
 
 int points = 0;
+int lives = 3;
 
-void drawPoints(){ // TODO make points relative to difficulty and time
-    DrawRectangle(0, 0, SCREEN_WIDTH, 40, (Color){0, 0, 0, 120});
+void drawUI(){ // TODO make points relative to difficulty and time
+    DrawRectangle(0, 0, SCREEN_WIDTH, 40, (Color){0, 0, 0, 120}); // low opacity black rectangle
+
+    // ----- Points -----
     DrawText(TextFormat("Pontos: %d", points), 10, 10, 20, WHITE);
+
+    // ----- Lifes -----
+    DrawTextureEx(heart_texture, (Vector2){SCREEN_WIDTH-120, 0}, 0, 1.4, WHITE);
+    DrawText(TextFormat("x %d", lives), SCREEN_WIDTH-75, 10, 20, WHITE);
 }
 
 void movements(float &ft){
@@ -23,11 +30,11 @@ void collisions(){
 }
 
 void draw(){
-    DrawTexture(game_background, 0, 0, WHITE);
-    DrawTexture(ball_texture, ball.position.x-ball.radius, ball.position.y-ball.radius, WHITE);
-    DrawTexture(paddle_texture, paddle.position.x-paddle.size.x/2, paddle.position.y-paddle.size.y/2, WHITE);
+    DrawTexture(game_background, 0, 0, WHITE); // in-game background
+    drawBall();
+    drawPaddle();
     drawBricks();
-    drawPoints();
+    drawUI();
     
     BeginDrawing();
     ClearBackground(WHITE);

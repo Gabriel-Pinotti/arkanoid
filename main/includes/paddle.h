@@ -15,4 +15,6 @@ void paddle_wall_collision();
 
 void movePaddle(float &ft);
 
+void drawPaddle();
+
 #endif

@@ -3,6 +3,7 @@
 Texture2D game_background;
 Texture2D paddle_texture;
 Texture2D ball_texture;
+Texture2D heart_texture;
 Texture2D brick_1hp_texture;
 Texture2D brick_2hp_texture;
 Texture2D brick_3hp_texture;
@@ -14,6 +15,7 @@ void initializeTextures(){
     game_background = LoadTexture("../assets/backgrounds/game_background.png");
     paddle_texture = LoadTexture("../assets/paddles/paddle_normal_texture.png");
     ball_texture = LoadTexture("../assets/misc/ball_texture.png");
+    heart_texture = LoadTexture("../assets/misc/heart.png");
     brick_1hp_texture = LoadTexture("../assets/bricks/1hpbrick.png");
     brick_2hp_texture = LoadTexture("../assets/bricks/2hpbrick.png");
     brick_3hp_texture = LoadTexture("../assets/bricks/3hpbrick.png");

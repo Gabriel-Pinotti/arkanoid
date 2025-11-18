@@ -16,4 +16,6 @@ void moveBall();
 
 void ball_collision();
 
+void drawBall();
+
 #endif

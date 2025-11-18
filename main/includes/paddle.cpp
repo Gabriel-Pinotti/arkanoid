@@ -1,11 +1,10 @@
 #include "raylib.h"
 #include "global.h"
 #include "paddle.h"
+#include "textures.h"
 
-// ----- Main declaration -----
 Paddle paddle;
 
-// ----- Wall collision -----
 void paddle_wall_collision(){
     if ((paddle.position.x - paddle.size.x/2) <= 0) {
         paddle.position.x = paddle.size.x/2;
@@ -15,7 +14,6 @@ void paddle_wall_collision(){
     }
 }
 
-// ----- Movimentation -----
 void movePaddle(float &ft){
     char direction;
     if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)){
@@ -38,4 +36,8 @@ void movePaddle(float &ft){
         case 's':
             break;
     }
+}
+
+void drawPaddle(){
+    DrawTexture(paddle_texture, paddle.position.x-paddle.size.x/2, paddle.position.y-paddle.size.y/2, WHITE);
 }
