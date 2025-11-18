@@ -6,4 +6,13 @@
 #define SCREEN_WIDTH 400
 #define SCREEN_HEIGHT 800
 
+// ----- GLOBAL FUNCTIONS -----
+void movements(float &ft);
+
+void collisions();
+
+void draw();
+
+void initializeGame();
+
 #endif
