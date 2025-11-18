@@ -7,7 +7,7 @@ Brick brick[brickRows][bricksPerRow];
 
 void initializeBricks(){
     float x_margins = 30; // blocks are 68x40px
-    float y_margin = 55;
+    float y_margin = 65;
     float brick_y = 35;
     float brick_x = (SCREEN_WIDTH-(2*x_margins))/bricksPerRow;
 

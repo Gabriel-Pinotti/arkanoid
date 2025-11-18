@@ -6,7 +6,7 @@
 Paddle paddle;
 
 // ----- Wall collision -----
-void paddle_wall_collision(Vector2 &paddle_position){
+void paddle_wall_collision(){
     if ((paddle.position.x - paddle.size.x/2) <= 0) {
         paddle.position.x = paddle.size.x/2;
     }

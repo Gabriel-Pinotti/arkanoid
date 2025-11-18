@@ -7,7 +7,7 @@
 
 int points = 0;
 
-void drawPoints(){
+void drawPoints(){ // TODO make points relative to difficulty and time
     DrawRectangle(0, 0, SCREEN_WIDTH, 40, (Color){0, 0, 0, 120});
     DrawText(TextFormat("Pontos: %d", points), 10, 10, 20, WHITE);
 }
@@ -19,7 +19,7 @@ void movements(float &ft){
 
 void collisions(){
     ball_collision();
-    paddle_wall_collision(paddle.position);
+    paddle_wall_collision();
 }
 
 void draw(){

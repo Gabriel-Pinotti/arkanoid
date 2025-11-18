@@ -11,7 +11,7 @@ struct Paddle {
 
 extern Paddle paddle;
 
-void paddle_wall_collision(Vector2 &paddle_position);
+void paddle_wall_collision();
 
 void movePaddle(float &ft);
 
