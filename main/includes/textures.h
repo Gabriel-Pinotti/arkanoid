@@ -12,4 +12,6 @@ extern Texture2D brick_4hp_texture;
 extern Texture2D brick_5hp_texture;
 extern Texture2D brick_6hp_texture;
 
+void initializeTextures();
+
 #endif

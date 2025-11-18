@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include "math.h"
 #include "paddle.h"
+#include "bricks.h"
 
 // ----- Main declaration -----
 Ball ball;
