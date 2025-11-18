@@ -8,8 +8,17 @@
 Ball ball;
 
 void moveBall(){
-    ball.position.x += ball.speed.x;
-    ball.position.y += ball.speed.y;
+    if (!ball.active) {
+        if (IsKeyPressed(KEY_SPACE)){
+            ball.active = true;
+            ball.speed = (Vector2){0, -5}; // TODO make {0, -5}, {0, -6.25} or {0, -7.5} when launching (based on difficulty)
+        }
+        ball.position = (Vector2){ paddle.position.x, paddle.position.y - paddle.size.y/2 - ball.radius };
+    } 
+    if (ball.active) {
+        ball.position.x += ball.speed.x;
+        ball.position.y += ball.speed.y;
+    }
 }
 
 void ball_collision(){
