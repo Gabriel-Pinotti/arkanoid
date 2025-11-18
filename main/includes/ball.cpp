@@ -22,6 +22,15 @@ void moveBall(){
     }
 }
 
+void registerHit(int i, int j){
+    brick[i][j].health -= 1;
+    if (brick[i][j].health == 0){
+        points +=2;
+        // TODO add here the possibility of dropping items
+    }
+    points +=1;
+}
+
 void ball_collision(){
 
     // ball x walls collision
@@ -62,12 +71,7 @@ void ball_collision(){
                     ((ball.position.y - ball.radius) > (brick[i][j].position.y + brick[i][j].size.y/2 + ball.speed.y)) &&
                     ((fabs(ball.position.x - brick[i][j].position.x)) < (brick[i][j].size.x/2 + ball.radius*2/3)) && (ball.speed.y < 0))
                 {
-                    brick[i][j].health -= 1;
-                    if (brick[i][j].health == 0){
-                        points +=2;
-                        // TODO add here the possibility of dropping items
-                    }
-                    points +=1;
+                    registerHit(i, j);
                     ball.speed.y *= -1;
                 }
                 // Hit above
@@ -75,11 +79,7 @@ void ball_collision(){
                         ((ball.position.y + ball.radius) < (brick[i][j].position.y - brick[i][j].size.y/2 + ball.speed.y)) &&
                         ((fabs(ball.position.x - brick[i][j].position.x)) < (brick[i][j].size.x/2 + ball.radius*2/3)) && (ball.speed.y > 0))
                 {
-                    brick[i][j].health -= 1;
-                    if (brick[i][j].health == 0){
-                        points +=2;
-                    }
-                    points +=1;
+                    registerHit(i, j);
                     ball.speed.y *= -1;
                 }
                 // Hit left
@@ -87,11 +87,7 @@ void ball_collision(){
                         ((ball.position.x + ball.radius) < (brick[i][j].position.x - brick[i][j].size.x/2 + ball.speed.x)) &&
                         ((fabs(ball.position.y - brick[i][j].position.y)) < (brick[i][j].size.y/2 + ball.radius*2/3)) && (ball.speed.x > 0))
                 {
-                    brick[i][j].health -= 1;
-                    if (brick[i][j].health == 0){
-                        points +=2;
-                    }
-                    points +=1;
+                    registerHit(i, j);
                     ball.speed.x *= -1;
                 }
                 // Hit right
@@ -99,11 +95,7 @@ void ball_collision(){
                         ((ball.position.x - ball.radius) > (brick[i][j].position.x + brick[i][j].size.x/2 + ball.speed.x)) &&
                         ((fabs(ball.position.y - brick[i][j].position.y)) < (brick[i][j].size.y/2 + ball.radius*2/3)) && (ball.speed.x < 0))
                 {
-                    brick[i][j].health -= 1;
-                    if (brick[i][j].health == 0){
-                        points +=2;
-                    }
-                    points +=1;
+                    registerHit(i, j);
                     ball.speed.x *= -1;
                 }
             }

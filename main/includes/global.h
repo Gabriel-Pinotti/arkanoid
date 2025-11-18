@@ -7,6 +7,8 @@
 #define SCREEN_HEIGHT 700
 extern int points;
 extern int lives;
+extern int level;
+extern int difficulty;
 
 // ----- GLOBAL FUNCTIONS -----
 void movements(float &ft);

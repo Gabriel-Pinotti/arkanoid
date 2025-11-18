@@ -7,6 +7,9 @@
 
 int points = 0;
 int lives = 3;
+int level = 1;
+int difficulty = 1; // TODO select after clicking "play" on menu
+
 
 void drawUI(){ // TODO make points relative to difficulty and time
     DrawRectangle(0, 0, SCREEN_WIDTH, 40, (Color){0, 0, 0, 120}); // low opacity black rectangle
@@ -15,8 +18,8 @@ void drawUI(){ // TODO make points relative to difficulty and time
     DrawText(TextFormat("Pontos: %d", points), 10, 10, 20, WHITE);
 
     // ----- Lifes -----
-    DrawTextureEx(heart_texture, (Vector2){SCREEN_WIDTH-120, 0}, 0, 1.4, WHITE);
-    DrawText(TextFormat("x %d", lives), SCREEN_WIDTH-75, 10, 20, WHITE);
+    DrawTextureEx(heart_texture, (Vector2){SCREEN_WIDTH-100, 0}, 0, 1.4, WHITE);
+    DrawText(TextFormat("x %d", lives), SCREEN_WIDTH-55, 10, 20, WHITE);
 }
 
 void movements(float &ft){

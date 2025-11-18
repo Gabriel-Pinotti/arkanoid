@@ -2,6 +2,12 @@
 #include "raylib.h"
 #include "global.h"
 #include "textures.h"
+#include <math.h>
+#include <cstdlib>
+#include <time.h>
+#include <stdlib.h>
+
+
 
 Brick brick[brickRows][bricksPerRow];
 
@@ -15,9 +21,52 @@ void initializeBricks(){
         for (int j = 0; j < bricksPerRow; j++) {
             brick[i][j].size = {brick_x, brick_y};
             brick[i][j].position = { (j*brick[i][j].size.x + brick[i][j].size.x/2)+x_margins, i*brick[i][j].size.y + y_margin };
-            brick[i][j].health = 6; // TODO randomize with a recursive function, based on difficulty and level
         }
     }
+    srand(time(NULL)); // for random layouts of blocks health
+    setBricksHealth(0, 0); 
+}
+
+void setBricksHealth(int row, int col) {
+    if (row >= brickRows) {
+        return;
+    }
+
+    if (col >= bricksPerRow) {
+        // next row, restarts column
+        setBricksHealth(row + 1, 0);
+        return;
+    }
+
+    float increaseFactor = (level * 0.05f) + (difficulty * 0.1f);
+    
+    float baseChanceForOne = 0.7f; // 70% base-chance for 1hp bricks
+    float actualChanceForOne = baseChanceForOne - increaseFactor;
+
+    if (actualChanceForOne < 0.1f) {
+        actualChanceForOne = 0.1f;
+    }
+
+    float randomValue = ((float)rand() / (float)RAND_MAX);
+
+    if (randomValue < actualChanceForOne) {
+        brick[row][col].health = 1;
+    } else {
+        float normalizedRandom = (randomValue - actualChanceForOne) / (1.0f - actualChanceForOne);
+        float biasedRandom = powf(normalizedRandom, 1.0f - increaseFactor); 
+
+        int range = 5;
+        
+        int calculatedHealth = (int)floorf(biasedRandom * (float)range) + 2;
+
+        if (calculatedHealth > 6) {
+            calculatedHealth = 6;
+        }
+
+        brick[row][col].health = calculatedHealth;
+    }
+
+    setBricksHealth(row, col + 1);
 }
 
 void drawBricks(){

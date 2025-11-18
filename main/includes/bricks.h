@@ -15,6 +15,8 @@ extern Brick brick[brickRows][bricksPerRow];
 
 void initializeBricks();
 
+void setBricksHealth(int row, int col);
+
 void drawBricks();
 
 #endif
