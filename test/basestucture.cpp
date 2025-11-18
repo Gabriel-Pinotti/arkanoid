@@ -57,7 +57,7 @@ void initializeBricks(){
         for (int j = 0; j < bricksPerRow; j++) {
             brick[i][j].size = {brick_x, brick_y};
             brick[i][j].position = { (j*brick[i][j].size.x + brick[i][j].size.x/2)+x_margins, i*brick[i][j].size.y + y_margin };
-            brick[i][j].health = 6; // TODO create bricks with different health based on difficulty
+            brick[i][j].health = 6; // TODO randomize with a recursive function, based on difficulty and level
         }
     }
 }
@@ -66,7 +66,7 @@ void initializeTextures(){
     game_background = LoadTexture("../assets/backgrounds/game_background.png");
     paddle_texture = LoadTexture("../assets/paddles/paddle_normal_texture.png");
     ball_texture = LoadTexture("../assets/misc/ball_texture.png");
-    brick_1hp_texture = LoadTexture("../assets/bricks/1hpbrick.png"); // TODO add the remaining textures
+    brick_1hp_texture = LoadTexture("../assets/bricks/1hpbrick.png");
     brick_2hp_texture = LoadTexture("../assets/bricks/2hpbrick.png");
     brick_3hp_texture = LoadTexture("../assets/bricks/3hpbrick.png");
     brick_4hp_texture = LoadTexture("../assets/bricks/4hpbrick.png");
