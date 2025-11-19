@@ -1,0 +1,16 @@
+#!/bin/bash
+#must use chmod +x linuxcompiler
+echo "--Type output file name--"
+read OUTPUT_NAME
+
+if [ -z "$OUTPUT_NAME" ]; then
+	OUTPUT_NAME="arkanoid.out"
+	echo "Using default... arkanoid.out"
+fi
+
+echo "Compiling..."
+
+g++ ./src/main.cpp ./includes/*.cpp -lraylib -o "$OUTPUT_NAME"
+
+echo "Finished in --> $OUTPUT_NAME"
+
