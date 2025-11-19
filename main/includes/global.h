@@ -5,6 +5,8 @@
 // ----- GLOBAL VARIABLES -----
 #define SCREEN_WIDTH 400
 #define SCREEN_HEIGHT 700
+extern int baseTime;
+extern double currentLevelTime;
 extern int points;
 extern int lives;
 extern int level;

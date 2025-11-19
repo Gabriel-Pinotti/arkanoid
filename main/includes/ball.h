@@ -11,6 +11,7 @@ struct Ball {
 };
 
 extern Ball ball;
+extern int localStoredTime;
 
 void moveBall();
 

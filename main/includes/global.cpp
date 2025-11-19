@@ -4,7 +4,10 @@
 #include "paddle.h"
 #include "bricks.h"
 #include "textures.h"
+#include <cmath>
 
+int baseTime = GetTime();
+double currentLevelTime = 0;
 int points = 0;
 int lives = 3;
 int level = 1;
@@ -20,6 +23,11 @@ void drawUI(){ // TODO make points relative to difficulty and time
     // ----- Lifes -----
     DrawTextureEx(heart_texture, (Vector2){SCREEN_WIDTH-100, 0}, 0, 1.4, WHITE);
     DrawText(TextFormat("x %d", lives), SCREEN_WIDTH-55, 10, 20, WHITE);
+
+    // ----- Time -----
+    int displayMin = (int)(currentLevelTime / 60.0);
+    float displaySec = (float)fmod(currentLevelTime, 60.0);
+    DrawText(TextFormat("%02i:%02.0f", displayMin, displaySec), SCREEN_WIDTH/2-23, 10, 20, WHITE);
 }
 
 void movements(float &ft){
