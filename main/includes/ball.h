@@ -15,6 +15,8 @@ extern int localStoredTime;
 
 void moveBall();
 
+void registerHit(int i, int j);
+
 void ball_collision();
 
 void drawBall();

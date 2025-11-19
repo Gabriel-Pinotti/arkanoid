@@ -5,6 +5,9 @@
 #include "bricks.h"
 #include "textures.h"
 
+#include <iostream> // TODO remove before commiting
+using namespace std;
+
 // ----- Main declaration -----
 Ball ball;
 
@@ -15,7 +18,7 @@ void moveBall(){
     if (!ball.active) {
         if (IsKeyPressed(KEY_SPACE)){ // threw the ball
             ball.active = true;
-            ball.speed = (Vector2){0, -5}; // TODO make {0, -5}, {0, -6.25} or {0, -7.5} when launching (based on difficulty)
+            ball.speed = (Vector2){0, -7.5}; // TODO make {0, -6}, {0, -7.5} or {0, -9} when launching (based on difficulty)
             baseTime = GetTime() - localStoredTime; // set mark to timer calculation, adding the timer between attempts
         }
         ball.position = (Vector2){ paddle.position.x, paddle.position.y - paddle.size.y/2 - ball.radius };
@@ -28,12 +31,17 @@ void moveBall(){
 }
 
 void registerHit(int i, int j){
+    int bonusPoints = ((300 - currentLevelTime) + (difficulty * 5))/5;
     brick[i][j].health -= 1;
     if (brick[i][j].health == 0){
         points +=2;
         // TODO add here the possibility of dropping items
     }
     points +=1;
+    cout << "bonusPoints = " << bonusPoints << endl;
+    if (bonusPoints > 0){
+        points += bonusPoints;
+    }
 }
 
 void ball_collision(){
