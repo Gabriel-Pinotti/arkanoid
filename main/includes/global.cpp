@@ -6,15 +6,19 @@
 #include "textures.h"
 #include <cmath>
 
+// -- time
 int baseTime = GetTime();
 double currentLevelTime = 0;
+// -- level specific
 int points = 0;
 int lives = 3;
 int level = 1;
+// -- menu and selections
 int difficulty = 1; // TODO select after clicking "play" on menu
+game_state_selection gameState = GAME;
 
 
-void drawUI(){ // TODO make points relative to difficulty and time
+void drawGameUI(){ // TODO make points relative to difficulty and time
     DrawRectangle(0, 0, SCREEN_WIDTH, 40, (Color){0, 0, 0, 120}); // low opacity black rectangle
 
     // ----- Points -----
@@ -30,22 +34,22 @@ void drawUI(){ // TODO make points relative to difficulty and time
     DrawText(TextFormat("%02i:%02.0f", displayMin, displaySec), SCREEN_WIDTH/2-23, 10, 20, WHITE);
 }
 
-void movements(float &ft){
+void game_movements(float &ft){
     movePaddle(ft);
     moveBall();
 }
 
-void collisions(){
+void game_collisions(){
     ball_collision();
     paddle_wall_collision();
 }
 
-void draw(){
+void game_draw(){
     DrawTexture(game_background, 0, 0, WHITE); // in-game background
     drawBall();
     drawPaddle();
     drawBricks();
-    drawUI();
+    drawGameUI();
     
     BeginDrawing();
     ClearBackground(WHITE);

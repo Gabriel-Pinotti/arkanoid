@@ -5,9 +5,6 @@
 #include "bricks.h"
 #include "textures.h"
 
-#include <iostream> // TODO remove before commiting
-using namespace std;
-
 // ----- Main declaration -----
 Ball ball;
 
@@ -38,7 +35,6 @@ void registerHit(int i, int j){
         // TODO add here the possibility of dropping items
     }
     points +=1;
-    cout << "bonusPoints = " << bonusPoints << endl;
     if (bonusPoints > 0){
         points += bonusPoints;
     }
