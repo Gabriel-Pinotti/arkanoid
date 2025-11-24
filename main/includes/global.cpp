@@ -18,6 +18,14 @@ int difficulty = 1; // TODO select after clicking "play" on menu
 game_state_selection gameState = MENUPAGE;
 
 
+void menuExitVerification(){
+    if (IsKeyPressed(KEY_ESCAPE)){
+        ball.active = false;
+
+        gameState = MENUPAGE;
+    }
+}
+
 void drawGameUI(){ // TODO make points relative to difficulty and time
     DrawRectangle(0, 0, SCREEN_WIDTH, 40, (Color){0, 0, 0, 120}); // low opacity black rectangle
 
@@ -37,6 +45,7 @@ void drawGameUI(){ // TODO make points relative to difficulty and time
 void game_movements(float &ft){
     movePaddle(ft);
     moveBall();
+    menuExitVerification();
 }
 
 void game_collisions(){
@@ -58,8 +67,12 @@ void game_draw(){
 
 void initializeGame(){
     initializeBricks();
+    ball.speed = {0, 0};
+    ball.active = false;
+    paddle.position = {((SCREEN_WIDTH/2)), 650};
     lives = 3;
     points = 0;
+    localStoredTime = 0;
     currentLevelTime = 0;
     gameState = GAME;
 }
