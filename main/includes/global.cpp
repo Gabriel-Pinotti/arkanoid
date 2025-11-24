@@ -15,7 +15,7 @@ int lives = 3;
 int level = 1;
 // -- menu and selections
 int difficulty = 1; // TODO select after clicking "play" on menu
-game_state_selection gameState = GAME;
+game_state_selection gameState = MENUPAGE;
 
 
 void drawGameUI(){ // TODO make points relative to difficulty and time

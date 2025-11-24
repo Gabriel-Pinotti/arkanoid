@@ -52,10 +52,12 @@ void ball_collision(){
     }
     if ((ball.position.y + ball.radius) >= SCREEN_HEIGHT) { // down - punish player
         lives-=1;
+        if (lives == 0){
+            gameState = ENDGAME;
+        }
         ball.speed = {0, 0};
         ball.active = false;
         localStoredTime = currentLevelTime;
-        // TODO add game over screen
     }
 
 

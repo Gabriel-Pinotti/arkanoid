@@ -4,7 +4,7 @@
 #include "../includes/textures.h"
 #include "../includes/ball.h"
 #include "../includes/bricks.h"
-#include "../includes/menu.h"
+#include "../includes/menus.h"
 using namespace std;
 // compile using makefile if using linux
 // for windows, use alternative makefile
@@ -12,13 +12,16 @@ using namespace std;
 int main(){
     SetTargetFPS(60);
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Arkanoid");
-    initializeGame();
     while (!WindowShouldClose()){ // while the game is running
         float ft = GetFrameTime();
         if (gameState == MENUPAGE){
             // draw menu and render mouse hover / clicking
-            menu_draw();
-            menu_clickcheck();
+            mainmenu_draw();
+            mainmenu_clickcheck();
+        }
+        if (gameState == ENDGAME){
+            endgame_draw();
+            endgame_return();
         }
         if (gameState == GAME){
             game_movements(ft);
