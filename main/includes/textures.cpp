@@ -1,6 +1,10 @@
 #include "textures.h"
 
 Texture2D game_background;
+Texture2D mainmenu_background;
+Texture2D mainmenu_logo;
+Texture2D button_texture;
+Texture2D alt_button_texture;
 Texture2D paddle_texture;
 Texture2D ball_texture;
 Texture2D heart_texture;
@@ -13,6 +17,10 @@ Texture2D brick_6hp_texture;
 
 void initializeTextures(){
     game_background = LoadTexture("../assets/backgrounds/game_background.png");
+    mainmenu_background = LoadTexture("../assets/backgrounds/mainmenu_background.png");
+    mainmenu_logo = LoadTexture("../assets/misc/mainmenu_logo.png");
+    button_texture = LoadTexture("../assets/misc/button.png");
+    alt_button_texture = LoadTexture("../assets/misc/alt_button.png");
     paddle_texture = LoadTexture("../assets/paddles/paddle_normal_texture.png");
     ball_texture = LoadTexture("../assets/misc/ball_texture.png");
     heart_texture = LoadTexture("../assets/misc/heart.png");

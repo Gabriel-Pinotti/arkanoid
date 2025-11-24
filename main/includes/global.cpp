@@ -58,5 +58,8 @@ void game_draw(){
 
 void initializeGame(){
     initializeBricks();
-    initializeTextures();
+    lives = 3;
+    points = 0;
+    currentLevelTime = 0;
+    gameState = GAME;
 }

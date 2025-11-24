@@ -12,6 +12,7 @@ using namespace std;
 int main(){
     SetTargetFPS(60);
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Arkanoid");
+    initializeTextures();
     while (!WindowShouldClose()){ // while the game is running
         float ft = GetFrameTime();
         if (gameState == MENUPAGE){
