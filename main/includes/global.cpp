@@ -14,7 +14,7 @@ int points;
 int lives;
 int level;
 // -- menu and selections
-int difficulty = 1; // TODO select after clicking "play" on menu
+int difficulty = 1;
 game_state_selection gameState = MENUPAGE;
 
 
@@ -26,7 +26,7 @@ void menuExitVerification(){
     }
 }
 
-void drawGameUI(){ // TODO make points relative to difficulty and time
+void drawGameUI(){
     DrawRectangle(0, 0, SCREEN_WIDTH, 40, (Color){0, 0, 0, 120}); // low opacity black rectangle
 
     // ----- Points -----
@@ -72,7 +72,7 @@ void initializeGame(){
     ball.active = false;
     paddle.position = {((SCREEN_WIDTH/2)), 650};
     // -- level specific variables
-    lives = 1;
+    lives = 1; // TODO make base HP be 3 in final versions
     level = 1;
     points = 0;
     // -- time

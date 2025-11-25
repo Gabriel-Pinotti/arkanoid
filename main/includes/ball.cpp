@@ -15,7 +15,17 @@ void moveBall(){
     if (!ball.active) {
         if (IsKeyPressed(KEY_SPACE)){ // threw the ball
             ball.active = true;
-            ball.speed = (Vector2){0, -7.5}; // TODO make {0, -6}, {0, -7.5} or {0, -9} when launching (based on difficulty)
+            switch (difficulty){
+                case 1:
+                    ball.speed = (Vector2){0, -7};
+                    break;
+                case 2:
+                    ball.speed = (Vector2){0, -8};
+                    break;
+                case 3:
+                    ball.speed = (Vector2){0, -9};
+                    break;
+            }
             baseTime = GetTime() - localStoredTime; // set mark to timer calculation, adding the timer between attempts
         }
         ball.position = (Vector2){ paddle.position.x, paddle.position.y - paddle.size.y/2 - ball.radius };

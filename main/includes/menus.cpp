@@ -11,13 +11,12 @@ Vector2 mousePnt = {0.0f, 0.0f};
 bool checkDrawButton(const char *btn_text, Rectangle button){
     // -- Draw button
     mousePnt = GetMousePosition();
-    if (!CheckCollisionPointRec(mousePnt, button)){ // PLAY button
+    if (!CheckCollisionPointRec(mousePnt, button)){
         DrawTexture(button_texture, button.x, button.y, WHITE);
-        DrawText(btn_text, (SCREEN_WIDTH-MeasureText(btn_text, 26))/2, button.y+12, 26, BLACK);
     } else {
         DrawTexture(alt_button_texture, button.x, button.y, WHITE);
-        DrawText(btn_text, (SCREEN_WIDTH-MeasureText(btn_text, 26))/2, button.y+12, 26, (Color){0x93, 0x84, 0x73, 0xff});
     }
+    DrawText(btn_text, (SCREEN_WIDTH-MeasureText(btn_text, 26))/2, button.y+12, 26, BLACK);
     // -- Check click
     if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && CheckCollisionPointRec(mousePnt, button)){
         return true;
@@ -26,27 +25,64 @@ bool checkDrawButton(const char *btn_text, Rectangle button){
     }
 }
 
+
 // -- MAIN MENU
 Rectangle playButton = {(SCREEN_WIDTH-230)/2, 260, 230, 54};
-Rectangle rankingButton = {(SCREEN_WIDTH-230)/2, 360, 230, 54};
-Rectangle quitButton = {(SCREEN_WIDTH-230)/2, 460, 230, 54};
+Rectangle difficultySelectionButton = {(SCREEN_WIDTH-230)/2, 360, 230, 54};
+Rectangle rankingButton = {(SCREEN_WIDTH-230)/2, 460, 230, 54};
+Rectangle quitButton = {(SCREEN_WIDTH-230)/2, 560, 230, 54};
+
+// -- difficulty selection
+void difficultyButtonVerification(){
+    // get mouse position
+    mousePnt = GetMousePosition();
+    
+    // draw button (color variation)
+    if (!CheckCollisionPointRec(mousePnt, difficultySelectionButton)){
+        DrawTexture(button_texture, difficultySelectionButton.x, difficultySelectionButton.y, WHITE);
+    } else {
+        DrawTexture(alt_button_texture, difficultySelectionButton.x, difficultySelectionButton.y, WHITE);
+    }
+
+    // draw difficulty name
+    if (difficulty == 1){
+        DrawText("Dificuldade: Fácil", (SCREEN_WIDTH-MeasureText("Dificuldade: Fácil", 22))/2, difficultySelectionButton.y+14, 22, BLACK);
+    }
+    if (difficulty == 2){
+        DrawText("Dificuldade: Médio", (SCREEN_WIDTH-MeasureText("Dificuldade: Médio", 22))/2, difficultySelectionButton.y+14, 22, BLACK);
+    }
+    if (difficulty == 3){
+        DrawText("Dificuldade: Difiícil", (SCREEN_WIDTH-MeasureText("Dificuldade: Difiícil", 22))/2, difficultySelectionButton.y+14, 22, BLACK);
+    }
+
+    // check clicking
+    if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && CheckCollisionPointRec(mousePnt, difficultySelectionButton)){
+        if (difficulty == 1){
+            difficulty = 2;
+        } else if (difficulty == 2){
+            difficulty = 3;
+        } else if (difficulty == 3) {
+            difficulty = 1;
+        }
+    }
+}
 
 void mainmenu_render(){
     DrawTexture(mainmenu_background, 0, 0, WHITE);
     DrawTexture(mainmenu_logo, (SCREEN_WIDTH-295)/2, 75, WHITE);
-
     // -- "JOGAR"
-    if(checkDrawButton("JOGAR", playButton)){
+    if(checkDrawButton("Jogar", playButton)){
         initializeGame();
-        // TODO define difficulty based on user selection here
     }
+    // -- "Dificuldade: "
+    difficultyButtonVerification();
     // -- "RANKING"
-    if(checkDrawButton("RANKING", rankingButton)){
+    if(checkDrawButton("Ranking", rankingButton)){
         // gameState = RANKING;
         // TODO add ranking screen
     }
     // -- "SAIR"
-    if(checkDrawButton("SAIR", quitButton)){
+    if(checkDrawButton("Sair", quitButton)){
         CloseWindow();
     }
 
@@ -58,7 +94,7 @@ void mainmenu_render(){
 string playerName;
 Rectangle endgame_returnbtn = {(SCREEN_WIDTH-230)/2, 500, 230, 54};
 
-void endgame_entername(){
+void endgame_entername(){ // TODO overcharge function to write files with default name
     int keyPressed = GetKeyPressed();
     // -- write when pressing
     while (keyPressed > 0) {
@@ -69,7 +105,7 @@ void endgame_entername(){
         keyPressed = GetKeyPressed();
     }
     // -- erase with backspace
-    if (IsKeyPressed(KEY_BACKSPACE)){
+    if (IsKeyPressed(KEY_BACKSPACE) && playerName != ""){
         playerName.pop_back();
     }
     // -- enter also saves
