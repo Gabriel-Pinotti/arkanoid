@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include "global.h"
 #include "textures.h"
+#include "saving.h"
 #include <iostream>
 using namespace std;
 #include <string>
@@ -94,7 +95,7 @@ void mainmenu_render(){
 string playerName;
 Rectangle endgame_returnbtn = {(SCREEN_WIDTH-230)/2, 500, 230, 54};
 
-void endgame_entername(){ // TODO overcharge function to write files with default name
+void endgame_entername(){
     int keyPressed = GetKeyPressed();
     // -- write when pressing
     while (keyPressed > 0) {
@@ -108,10 +109,11 @@ void endgame_entername(){ // TODO overcharge function to write files with defaul
     if (IsKeyPressed(KEY_BACKSPACE) && playerName != ""){
         playerName.pop_back();
     }
-    // -- enter also saves
-    if (IsKeyPressed(KEY_ENTER) or checkDrawButton("SALVAR", endgame_returnbtn)){
+    // -- save
+    if (IsKeyPressed(KEY_ENTER) || checkDrawButton("SALVAR", endgame_returnbtn)){
+        saveScore(playerName, points, difficulty);
+        playerName.clear();
         gameState = MENUPAGE;
-        // TODO save into file, in another cpp
     }
 }
 

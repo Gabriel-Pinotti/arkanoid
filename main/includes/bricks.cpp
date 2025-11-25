@@ -16,7 +16,7 @@ void initializeBricks(){
     float y_margin = 65;
     float brick_y = 35;
     float brick_x = (SCREEN_WIDTH-(2*x_margins))/bricksPerRow;
-
+    
     for (int i = 0; i < brickRows; i++) {
         for (int j = 0; j < bricksPerRow; j++) {
             brick[i][j].size = {brick_x, brick_y};
@@ -24,6 +24,7 @@ void initializeBricks(){
         }
     }
     srand(time(NULL)); // for random layouts of blocks health
+    hitsRemaining = 0;
     setBricksHealth(0, 0); 
 }
 
@@ -51,6 +52,7 @@ void setBricksHealth(int row, int col) {
 
     if (randomValue < actualChanceForOne) {
         brick[row][col].health = 1;
+        hitsRemaining+=1;
     } else {
         float normalizedRandom = (randomValue - actualChanceForOne) / (1.0f - actualChanceForOne);
         float biasedRandom = powf(normalizedRandom, 1.0f - increaseFactor); 
@@ -64,6 +66,7 @@ void setBricksHealth(int row, int col) {
         }
 
         brick[row][col].health = calculatedHealth;
+        hitsRemaining+=calculatedHealth;
     }
 
     setBricksHealth(row, col + 1);

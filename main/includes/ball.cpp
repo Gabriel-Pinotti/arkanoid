@@ -38,8 +38,13 @@ void moveBall(){
 }
 
 void registerHit(int i, int j){
-    int bonusPoints = ((300 - currentLevelTime) + (difficulty * 5))/5;
+    int bonusPoints = ((300 - currentLevelTime) + (difficulty * 5))/10;
     brick[i][j].health -= 1;
+    hitsRemaining-=1;
+    if (hitsRemaining == 0){
+        initializeGame(points);
+        return;
+    }
     if (brick[i][j].health == 0){
         points +=2;
         // TODO add here the possibility of dropping items

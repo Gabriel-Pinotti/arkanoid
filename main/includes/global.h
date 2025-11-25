@@ -12,6 +12,7 @@ extern double currentLevelTime;
 extern int points;
 extern int lives;
 extern int level;
+extern int hitsRemaining;
 // -- menu and selections
 extern int difficulty;
 enum game_state_selection {
@@ -30,5 +31,7 @@ void game_collisions();
 void game_draw();
 
 void initializeGame();
+
+void initializeGame(int points);
 
 #endif
