@@ -7,12 +7,12 @@
 #include <cmath>
 
 // -- time
-int baseTime = GetTime();
-double currentLevelTime = 0;
+int baseTime;
+double currentLevelTime;
 // -- level specific
-int points = 0;
-int lives = 3;
-int level = 1;
+int points;
+int lives;
+int level;
 // -- menu and selections
 int difficulty = 1; // TODO select after clicking "play" on menu
 game_state_selection gameState = MENUPAGE;
@@ -66,13 +66,19 @@ void game_draw(){
 }
 
 void initializeGame(){
+    // -- game objects
     initializeBricks();
     ball.speed = {0, 0};
     ball.active = false;
     paddle.position = {((SCREEN_WIDTH/2)), 650};
-    lives = 3;
+    // -- level specific variables
+    lives = 1;
+    level = 1;
     points = 0;
+    // -- time
     localStoredTime = 0;
     currentLevelTime = 0;
+
+    // -- render game
     gameState = GAME;
 }

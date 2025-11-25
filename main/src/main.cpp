@@ -18,12 +18,10 @@ int main(){
         float ft = GetFrameTime();
         if (gameState == MENUPAGE){
             // draw menu and render mouse hover / clicking
-            mainmenu_draw();
-            mainmenu_clickcheck();
+            mainmenu_render();
         }
         if (gameState == ENDGAME){
-            endgame_draw();
-            endgame_return();
+            endgame_render();
         }
         if (gameState == GAME){
             game_movements(ft);

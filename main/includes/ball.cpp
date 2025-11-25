@@ -9,7 +9,7 @@
 Ball ball;
 
 // variable to manage timer when reseting ball between player attempts
-int localStoredTime = 0; // TODO reset this variable to 0 when going back to the menu or changing levels
+int localStoredTime;
 
 void moveBall(){
     if (!ball.active) {
