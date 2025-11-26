@@ -2,7 +2,7 @@
 #define BRICKS
 #include "raylib.h"
 
-const int brickRows = 1;
+const int brickRows = 5;
 const int bricksPerRow = 5;
 
 struct Brick {

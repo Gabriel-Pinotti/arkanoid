@@ -28,6 +28,9 @@ int main(){
             game_collisions();
             game_draw();
         }
+        if (gameState == RANKING){
+            ranking_render();
+        }
     }
 
     CloseWindow();

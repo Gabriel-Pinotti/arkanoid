@@ -3,9 +3,10 @@
 #include "global.h"
 #include "textures.h"
 #include "saving.h"
+#include <vector>
+#include <string>
 #include <iostream>
 using namespace std;
-#include <string>
 
 Vector2 mousePnt = {0.0f, 0.0f};
 
@@ -54,6 +55,7 @@ void difficultyButtonVerification(){
     }
     if (difficulty == 3){
         DrawText("Dificuldade: Difiícil", (SCREEN_WIDTH-MeasureText("Dificuldade: Difiícil", 22))/2, difficultySelectionButton.y+14, 22, BLACK);
+        DrawText("Sem resturação de HP!", (SCREEN_WIDTH-MeasureText("Sem resturação de HP!", 14))/2, 420, 14, RED);
     }
 
     // check clicking
@@ -79,8 +81,7 @@ void mainmenu_render(){
     difficultyButtonVerification();
     // -- "RANKING"
     if(checkDrawButton("Ranking", rankingButton)){
-        // gameState = RANKING;
-        // TODO add ranking screen
+        gameState = RANKING;
     }
     // -- "SAIR"
     if(checkDrawButton("Sair", quitButton)){
@@ -127,6 +128,38 @@ void endgame_render(){
     DrawLine(70, 380, SCREEN_WIDTH-70, 380, WHITE);
     
 
+    BeginDrawing();
+    EndDrawing();
+}
+
+// -- RANKING
+int printedScoresNum = 5;
+void ranking_render(){
+    DrawTexture(mainmenu_background, 0, 0, WHITE);
+    DrawText("RANKING", (SCREEN_WIDTH-MeasureText("RANKING", 32))/2, 40, 32, WHITE);
+    DrawText(TextFormat("*Os %d melhores!", printedScoresNum), (SCREEN_WIDTH-MeasureText(TextFormat("*Os %d melhores!", printedScoresNum), 18))/2, 70, 18, WHITE);
+    vector<string> scoreList = readScoresFile();
+
+    sortScores(scoreList); // prioritze points, difficulty in order
+
+    for(int i = 0; i < scoreList.size() && i < printedScoresNum; i++){
+        vector<string> currentScore = formatScore(scoreList[i]);
+
+        string firstLineText = 
+            currentScore[0] + " - " +
+            currentScore[1] + " pts";
+        
+        string secondLineText =
+            currentScore[2] + " - " +
+            currentScore[3];
+
+        DrawText(firstLineText.c_str(), 15, 130+(80*i), 22, WHITE);
+        DrawText(secondLineText.c_str(), 15, 150+(80*i), 22, WHITE);
+    }
+
+    if(IsKeyPressed(KEY_ESCAPE) || checkDrawButton("RETORNAR", quitButton)){
+        gameState = MENUPAGE;
+    }
     BeginDrawing();
     EndDrawing();
 }

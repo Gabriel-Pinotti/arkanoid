@@ -9,5 +9,7 @@ void mainmenu_render();
 // ----- END GAME SCREEN -----
 void endgame_render();
 
+// ----- RANKING SCREEN -----
+void ranking_render();
 
 #endif
