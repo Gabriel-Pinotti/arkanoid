@@ -22,6 +22,9 @@ string getDate(){
 }
 
 void saveScore(string name, int pts, int dif){
+    if(name.empty()) {
+        name = "PLAYER";
+    }
     ofstream savefile("./data/saves.txt", ios::app);
     if (savefile.is_open()) {
         savefile << name << "|" << pts << "|" << dif << "|" << getDate() << endl;
