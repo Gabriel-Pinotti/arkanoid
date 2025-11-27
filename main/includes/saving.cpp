@@ -24,7 +24,7 @@ string getDate(){
 void saveScore(string name, int pts, int dif){
     ofstream savefile("./data/saves.txt", ios::app);
     if (savefile.is_open()) {
-        savefile << name << " | " << pts << " | " << dif << " | " << getDate() << endl;
+        savefile << name << "|" << pts << "|" << dif << "|" << getDate() << endl;
         savefile.close();
     }
 }
@@ -78,9 +78,13 @@ void sortScores(vector<string>& scoreList) {
 
         // 2 - difficulty
         auto diffToInt = [](const string& s) { // data formatting for comparision
-            if (s == "Fácil")   return 1;
-            if (s == "Médio")   return 2;
-            if (s == "Difícil") return 3;
+            if (s == "Fácil") {
+                return 1;
+            } else if (s == "Médio") {
+                return 2;
+            } else if (s == "Difícil") {
+                return 3;
+            }
             return 0;
         };
 
