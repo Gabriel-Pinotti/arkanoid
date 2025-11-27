@@ -52,31 +52,19 @@ vector<string> readScoresFile() { // return every save in a vector
 void sortScores(vector<string>& scoreList) { // sort saves by points and difficulty
     sort(scoreList.begin(), scoreList.end(), [](const string& a, const string& b) {
 
-        vector<string> A = formatScore(a);
-        vector<string> B = formatScore(b);
+        vector<string> A = formatScore(a, false);
+        vector<string> B = formatScore(b, false);
 
         int pointsA = stoi(A[1]);
         int pointsB = stoi(B[1]);
+        int difA = stoi(A[2]);
+        int difB = stoi(B[2]);
 
         // 1 - points
         if (pointsA != pointsB)
             return pointsA > pointsB;
-
+        
         // 2 - difficulty
-        auto diffToInt = [](const string& s) { // data formatting for comparision
-            if (s == "Fácil") {
-                return 1;
-            } else if (s == "Médio") {
-                return 2;
-            } else if (s == "Difícil") {
-                return 3;
-            }
-            return 0;
-        };
-
-        int difA = diffToInt(A[2]);
-        int difB = diffToInt(B[2]);
-
         if (difA != difB)
             return difA > difB;
 
@@ -85,7 +73,7 @@ void sortScores(vector<string>& scoreList) { // sort saves by points and difficu
 }
 
 
-vector<string> formatScore(const string& str) { // format specific save (vector with name, points, difficulty and date (in order))
+vector<string> formatScore(const string& str, bool formatDifficulty = true) { // format specific save (vector with name, points, difficulty and date (in order))
     vector<string> parts;
     string current = "";
 
@@ -99,9 +87,19 @@ vector<string> formatScore(const string& str) { // format specific save (vector 
     }
     parts.push_back(current); // final one
 
-    if (parts[2] == "1") parts[2] = "Fácil";
-    else if (parts[2] == "2") parts[2] = "Médio";
-    else if (parts[2] == "3") parts[2] = "Difícil";
+    if (formatDifficulty){
+        switch (stoi(parts[2])){
+            case 1:
+                parts[2] = "Fácil";
+                break;
+            case 2:
+                parts[2] = "Médio";
+                break;
+            case 3:
+                parts[2] = "Difícil";
+                break;
+        }
+    }
     
     return parts;
 }
