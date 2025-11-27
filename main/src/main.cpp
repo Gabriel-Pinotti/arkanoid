@@ -1,9 +1,5 @@
 #include "raylib.h"
-#include "../includes/paddle.h"
-#include "../includes/global.h"
 #include "../includes/textures.h"
-#include "../includes/ball.h"
-#include "../includes/bricks.h"
 #include "../includes/menus.h"
 using namespace std;
 // compile using makefile if using linux
