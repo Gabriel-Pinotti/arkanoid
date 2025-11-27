@@ -11,7 +11,7 @@
 #include <iostream>
 using namespace std;
 
-string getDate(){
+string getDate(){ // used in saveScore()
     auto now = chrono::system_clock::now();
     time_t now_time = std::chrono::system_clock::to_time_t(now);
     tm* local_time = std::localtime(&now_time);
@@ -21,7 +21,8 @@ string getDate(){
     return currentDate;
 }
 
-void saveScore(string name, int pts, int dif){
+
+void saveScore(string name, int pts, int dif){ // save into file
     if(name.empty()) {
         name = "PLAYER";
     }
@@ -32,41 +33,23 @@ void saveScore(string name, int pts, int dif){
     }
 }
 
-vector<string> formatScore(const string& str) {
-    vector<string> parts;
-    string current = "";
 
-    for (char c : str) {
-        if (c == '|') {
-            parts.push_back(current);
-            current = "";
-        } else {
-            current += c;
-        }
-    }
-    parts.push_back(current); // final one
-
-    if (parts[2] == "1") parts[2] = "Fácil";
-    else if (parts[2] == "2") parts[2] = "Médio";
-    else if (parts[2] == "3") parts[2] = "Difícil";
-    
-    return parts;
-}
-
-
-vector<string> readScoresFile() {
+vector<string> readScoresFile() { // return every save in a vector
     ifstream savefile("./data/saves.txt");
     vector<string> lineVector;
 
     string currentLine;
     while (getline(savefile, currentLine)) {
-        lineVector.push_back(currentLine);
+        if (currentLine != ""){ // skips if currentLine is empty
+            lineVector.push_back(currentLine);
+        }
     }
 
     return lineVector;
 }
 
-void sortScores(vector<string>& scoreList) {
+
+void sortScores(vector<string>& scoreList) { // sort saves by points and difficulty
     sort(scoreList.begin(), scoreList.end(), [](const string& a, const string& b) {
 
         vector<string> A = formatScore(a);
@@ -99,4 +82,26 @@ void sortScores(vector<string>& scoreList) {
 
         return false; // ptsA == ptsB && difA == difB
     });
+}
+
+
+vector<string> formatScore(const string& str) { // format specific save (vector with name, points, difficulty and date (in order))
+    vector<string> parts;
+    string current = "";
+
+    for (char c : str) {
+        if (c == '|') {
+            parts.push_back(current);
+            current = "";
+        } else {
+            current += c;
+        }
+    }
+    parts.push_back(current); // final one
+
+    if (parts[2] == "1") parts[2] = "Fácil";
+    else if (parts[2] == "2") parts[2] = "Médio";
+    else if (parts[2] == "3") parts[2] = "Difícil";
+    
+    return parts;
 }

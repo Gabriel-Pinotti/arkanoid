@@ -143,7 +143,7 @@ void ranking_render(){
     sortScores(scoreList); // prioritze points, difficulty in order
 
     for(int i = 0; i < scoreList.size() && i < printedScoresNum; i++){
-        vector<string> currentScore = formatScore(scoreList[i]);
+        vector<string> currentScore = formatScore(scoreList[i]); // format each save's elements
 
         string firstLineText = 
             currentScore[0] + " - " +
