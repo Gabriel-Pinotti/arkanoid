@@ -3,8 +3,8 @@
 
 ## Desenvolvedores
 
-> [Gabriel de Aquino Pinotti](https://www.github.com/gabriel-pinotti)
-> [Matheus Fuckner](https://www.github.com/Fuckner-mt)
+- [Gabriel de Aquino Pinotti](https://www.github.com/gabriel-pinotti)
+- [Matheus Fuckner](https://www.github.com/Fuckner-mt)
 
 
 ## Objetivo
