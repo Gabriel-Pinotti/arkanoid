@@ -1,10 +1,9 @@
 
 ![Logo](https://raw.githubusercontent.com/Gabriel-Pinotti/arkanoid/refs/heads/main/assets/misc/mainmenu_logo.png)
 
-## Desenvolvedores
+## Desenvolvedor
 
-- [Gabriel de Aquino Pinotti](https://www.github.com/gabriel-pinotti)
-- [Matheus Fuckner](https://www.github.com/Fuckner-mt)
+> [Gabriel de Aquino Pinotti](https://www.github.com/gabriel-pinotti)
 
 
 ## Objetivo

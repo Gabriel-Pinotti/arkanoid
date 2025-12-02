@@ -73,7 +73,7 @@ void sortScores(vector<string>& scoreList) { // sort saves by points and difficu
 }
 
 
-vector<string> formatScore(const string& str, bool formatDifficulty = true) { // format specific save (vector with name, points, difficulty and date (in order))
+vector<string> formatScore(const string& str, bool formatDifficulty) { // format specific save (vector with name, points, difficulty and date (in order))
     vector<string> parts;
     string current = "";
 
