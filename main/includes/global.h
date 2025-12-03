@@ -3,8 +3,8 @@
 #include "raylib.h"
 
 // ----- GLOBAL VARIABLES -----
-#define SCREEN_WIDTH 400
-#define SCREEN_HEIGHT 700
+const int SCREEN_WIDTH = 400;
+const int SCREEN_HEIGHT = 700;
 // -- time
 extern int baseTime;
 extern double currentLevelTime;
